@@ -32,7 +32,6 @@
     overflow-x: hidden;
   }
 
-  /* ── Grain overlay ── */
   body::before {
     content: '';
     position: fixed; inset: 0;
@@ -54,12 +53,8 @@
     text-transform: uppercase;
   }
 
-  .track-count {
-    font-size: 11px; color: var(--muted);
-    letter-spacing: 0.05em;
-  }
+  .track-count { font-size: 11px; color: var(--muted); letter-spacing: 0.05em; }
 
-  /* ── Now Playing card ── */
   .now-playing {
     width: 100%; max-width: 640px;
     background: var(--card);
@@ -75,14 +70,11 @@
     content: '';
     position: absolute; top: 0; left: 0; right: 0; height: 2px;
     background: linear-gradient(90deg, var(--accent), var(--accent2));
-    opacity: 0;
-    transition: opacity .4s;
+    opacity: 0; transition: opacity .4s;
   }
   .now-playing.playing::before { opacity: 1; }
 
-  .vinyl-wrap {
-    display: flex; align-items: center; gap: 24px; margin-bottom: 24px;
-  }
+  .vinyl-wrap { display: flex; align-items: center; gap: 24px; margin-bottom: 24px; }
 
   .vinyl {
     width: 72px; height: 72px; flex-shrink: 0;
@@ -107,213 +99,84 @@
     background: radial-gradient(circle, #c8f04a22, #0d0d0f);
     border: 1px solid var(--border);
   }
-
   @keyframes spin { to { transform: rotate(360deg); } }
 
   .track-info { flex: 1; min-width: 0; }
+  .track-label { font-size: 10px; color: var(--accent); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 6px; }
+  .track-title { font-family: 'Unbounded', sans-serif; font-size: 15px; font-weight: 700; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 4px; }
+  .track-index { font-size: 11px; color: var(--muted); }
 
-  .track-label {
-    font-size: 10px; color: var(--accent);
-    letter-spacing: 0.15em; text-transform: uppercase;
-    margin-bottom: 6px;
-  }
+  .progress-wrap { margin-bottom: 20px; cursor: pointer; }
+  .progress-times { display: flex; justify-content: space-between; font-size: 10px; color: var(--muted); margin-bottom: 8px; }
+  .progress-bar { height: 3px; background: var(--border); border-radius: 2px; overflow: hidden; }
+  .progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent2)); border-radius: 2px; width: 0%; transition: width .1s linear; }
 
-  .track-title {
-    font-family: 'Unbounded', sans-serif;
-    font-size: 15px; font-weight: 700;
-    color: var(--text);
-    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-    margin-bottom: 4px;
-  }
-
-  .track-index {
-    font-size: 11px; color: var(--muted);
-  }
-
-  /* ── Progress ── */
-  .progress-wrap {
-    margin-bottom: 20px;
-    cursor: pointer;
-  }
-
-  .progress-times {
-    display: flex; justify-content: space-between;
-    font-size: 10px; color: var(--muted);
-    margin-bottom: 8px;
-  }
-
-  .progress-bar {
-    height: 3px; background: var(--border);
-    border-radius: 2px; overflow: hidden;
-    position: relative;
-  }
-
-  .progress-fill {
-    height: 100%;
-    background: linear-gradient(90deg, var(--accent), var(--accent2));
-    border-radius: 2px;
-    width: 0%;
-    transition: width .1s linear;
-  }
-
-  /* ── Controls ── */
-  .controls {
-    display: flex; align-items: center; justify-content: center; gap: 16px;
-  }
+  .controls { display: flex; align-items: center; justify-content: center; gap: 16px; }
 
   .btn {
     background: none; border: none; cursor: pointer;
     color: var(--muted); transition: color .2s, transform .15s;
     display: flex; align-items: center; justify-content: center;
-    padding: 6px;
-    border-radius: 50%;
+    padding: 6px; border-radius: 50%;
   }
   .btn:hover { color: var(--text); transform: scale(1.1); }
   .btn:active { transform: scale(0.95); }
 
   .btn-play {
     width: 52px; height: 52px;
-    background: var(--accent);
-    color: var(--bg) !important;
+    background: var(--accent); color: var(--bg) !important;
     border-radius: 50%;
     box-shadow: 0 0 24px #c8f04a44;
     transition: background .2s, box-shadow .2s, transform .15s;
   }
-  .btn-play:hover {
-    background: #d9ff5a;
-    box-shadow: 0 0 32px #c8f04a66;
-  }
+  .btn-play:hover { background: #d9ff5a; box-shadow: 0 0 32px #c8f04a66; }
 
   .btn-shuffle, .btn-repeat {
     font-size: 10px; letter-spacing: .05em;
     padding: 4px 10px; border-radius: 20px;
-    border: 1px solid var(--border);
-    transition: all .2s;
+    border: 1px solid var(--border); transition: all .2s;
   }
-  .btn-shuffle.active, .btn-repeat.active {
-    border-color: var(--accent);
-    color: var(--accent);
-    background: #c8f04a11;
-  }
+  .btn-shuffle.active, .btn-repeat.active { border-color: var(--accent); color: var(--accent); background: #c8f04a11; }
 
-  /* ── Volume ── */
-  .volume-row {
-    display: flex; align-items: center; gap: 10px;
-    margin-top: 20px; padding-top: 18px;
-    border-top: 1px solid var(--border);
-  }
-
+  .volume-row { display: flex; align-items: center; gap: 10px; margin-top: 20px; padding-top: 18px; border-top: 1px solid var(--border); }
   .volume-row svg { color: var(--muted); flex-shrink: 0; }
 
-  input[type=range] {
-    -webkit-appearance: none; appearance: none;
-    flex: 1; height: 3px;
-    background: var(--border);
-    border-radius: 2px; outline: none;
-    cursor: pointer;
-  }
-  input[type=range]::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    width: 12px; height: 12px;
-    border-radius: 50%;
-    background: var(--accent);
-    cursor: pointer;
-  }
+  input[type=range] { -webkit-appearance: none; appearance: none; flex: 1; height: 3px; background: var(--border); border-radius: 2px; outline: none; cursor: pointer; }
+  input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 12px; height: 12px; border-radius: 50%; background: var(--accent); cursor: pointer; }
 
-  /* ── Playlist ── */
-  .playlist {
-    width: 100%; max-width: 640px;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    overflow: hidden;
-  }
+  .playlist { width: 100%; max-width: 640px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+  .playlist-header { padding: 14px 20px; font-size: 10px; letter-spacing: .15em; text-transform: uppercase; color: var(--muted); border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+  .playlist-body { max-height: 340px; overflow-y: auto; scrollbar-width: thin; scrollbar-color: var(--border) transparent; }
 
-  .playlist-header {
-    padding: 14px 20px;
-    font-size: 10px; letter-spacing: .15em; text-transform: uppercase;
-    color: var(--muted);
-    border-bottom: 1px solid var(--border);
-    display: flex; justify-content: space-between; align-items: center;
-  }
-
-  .playlist-body {
-    max-height: 340px; overflow-y: auto;
-    scrollbar-width: thin;
-    scrollbar-color: var(--border) transparent;
-  }
-
-  .playlist-item {
-    display: flex; align-items: center; gap: 14px;
-    padding: 12px 20px;
-    cursor: pointer;
-    border-bottom: 1px solid #1e1e2411;
-    transition: background .15s;
-    position: relative;
-  }
+  .playlist-item { display: flex; align-items: center; gap: 14px; padding: 12px 20px; cursor: pointer; border-bottom: 1px solid #1e1e2411; transition: background .15s; }
   .playlist-item:hover { background: var(--card); }
-  .playlist-item.active {
-    background: #c8f04a0a;
-  }
+  .playlist-item.active { background: #c8f04a0a; }
 
-  .item-num {
-    font-size: 11px; color: var(--muted);
-    width: 20px; text-align: right; flex-shrink: 0;
-  }
+  .item-num { font-size: 11px; color: var(--muted); width: 20px; text-align: right; flex-shrink: 0; }
   .playlist-item.active .item-num { display: none; }
 
-  .item-eq {
-    display: none;
-    width: 20px; flex-shrink: 0;
-    align-items: center; justify-content: flex-end; gap: 2px;
-    height: 14px;
-  }
+  .item-eq { display: none; width: 20px; flex-shrink: 0; align-items: center; justify-content: flex-end; gap: 2px; height: 14px; }
   .playlist-item.active .item-eq { display: flex; }
 
-  .eq-bar {
-    width: 3px; border-radius: 2px;
-    background: var(--accent);
-    animation: eq .6s ease-in-out infinite alternate;
-  }
+  .eq-bar { width: 3px; border-radius: 2px; background: var(--accent); animation: eq .6s ease-in-out infinite alternate; }
   .eq-bar:nth-child(2) { animation-delay: .15s; }
   .eq-bar:nth-child(3) { animation-delay: .3s; }
+  @keyframes eq { from { height: 4px; } to { height: 14px; } }
 
-  @keyframes eq {
-    from { height: 4px; }
-    to   { height: 14px; }
-  }
-
-  .item-name {
-    flex: 1; font-size: 13px;
-    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-    color: var(--text);
-  }
+  .item-name { flex: 1; font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--text); }
   .playlist-item.active .item-name { color: var(--accent); }
 
-  /* ── Loading / Empty states ── */
-  .state-msg {
-    padding: 40px 20px; text-align: center;
-    color: var(--muted); font-size: 13px;
-  }
-
-  .spinner {
-    width: 24px; height: 24px;
-    border: 2px solid var(--border);
-    border-top-color: var(--accent);
-    border-radius: 50%;
-    animation: spin .8s linear infinite;
-    margin: 0 auto 12px;
-  }
+  .state-msg { padding: 40px 20px; text-align: center; color: var(--muted); font-size: 13px; }
+  .spinner { width: 24px; height: 24px; border: 2px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin .8s linear infinite; margin: 0 auto 12px; }
 </style>
 </head>
 <body>
 
 <header>
-  <span class="logo">▶ Drive Player</span>
-  <span class="track-count" id="trackCount">— pistes</span>
+  <span class="logo">▶ Player</span>
+  <span class="track-count" id="trackCount">chargement…</span>
 </header>
 
-<!-- Now playing -->
 <div class="now-playing" id="nowPlaying">
   <div class="vinyl-wrap">
     <div class="vinyl" id="vinyl"></div>
@@ -336,14 +199,14 @@
 
   <div class="controls">
     <button class="btn btn-shuffle" id="btnShuffle" title="Aléatoire">⇌</button>
-    <button class="btn" id="btnPrev" title="Précédent">
+    <button class="btn" id="btnPrev">
       <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6 8.5 6V6z"/></svg>
     </button>
-    <button class="btn btn-play" id="btnPlay" title="Lecture/Pause">
+    <button class="btn btn-play" id="btnPlay">
       <svg id="iconPlay" width="22" height="22" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
       <svg id="iconPause" width="22" height="22" fill="currentColor" viewBox="0 0 24 24" style="display:none"><path d="M6 19h4V5H6zm8-14v14h4V5z"/></svg>
     </button>
-    <button class="btn" id="btnNext" title="Suivant">
+    <button class="btn" id="btnNext">
       <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M6 18l8.5-6L6 6zm8.5-6v6H17V6h-2.5z"/></svg>
     </button>
     <button class="btn btn-repeat" id="btnRepeat" title="Répéter">↻</button>
@@ -355,32 +218,31 @@
   </div>
 </div>
 
-<!-- Playlist -->
 <div class="playlist">
   <div class="playlist-header">
     <span>Playlist</span>
-    <span id="playlistInfo" style="font-size:10px"></span>
+    <span id="playlistInfo"></span>
   </div>
   <div class="playlist-body" id="playlistBody">
-    <div class="state-msg">
-      <div class="spinner"></div>
-      Chargement des pistes…
-    </div>
+    <div class="state-msg"><div class="spinner"></div>Chargement…</div>
   </div>
 </div>
 
-<!-- Audio element -->
-<audio id="audio" preload="none"></audio>
+<audio id="audio" preload="auto"></audio>
 
 <script>
-  // ── State ──────────────────────────────────────────────
-  var tracks      = [];
-  var currentIdx  = -1;
-  var shuffle     = false;
-  var repeat      = false;
+  // ================================================================
+  //  CONFIGURATION
+  // ================================================================
+  var MUSIC_FOLDER = "music"; // dossier dans le repo GitHub
+
+  // ================================================================
+  var tracks     = [];
+  var currentIdx = -1;
+  var shuffle    = false;
+  var repeat     = false;
   var shuffleOrder = [];
 
-  // ── DOM refs ───────────────────────────────────────────
   var audio        = document.getElementById('audio');
   var btnPlay      = document.getElementById('btnPlay');
   var iconPlay     = document.getElementById('iconPlay');
@@ -402,41 +264,47 @@
   var nowPlaying   = document.getElementById('nowPlaying');
   var volumeSlider = document.getElementById('volume');
 
-  // ── CONFIGURATION ─────────────────────────────────────
-  var APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyzSBVatEdo00vwWtKXW-oEPOmwhdy4y_e6BSz7DZMXRsXmXfV5qnBrhYQ05OldIsqX/exec"; // ex: https://script.google.com/macros/s/XXX/exec
-
-  // ── Load tracks via Apps Script ────────────────────────
-  fetch(APPS_SCRIPT_URL)
+  // Charge la playlist depuis playlist.json
+  fetch('playlist.json')
     .then(function(r) { return r.json(); })
-    .then(onTracksLoaded)
+    .then(function(files) {
+      tracks = files.map(function(f) {
+        return {
+          file: f,
+          name: f.replace(/\.[^/.]+$/, '').replace(/_/g, ' ')
+        };
+      });
+      trackCount.textContent = tracks.length + ' piste' + (tracks.length > 1 ? 's' : '');
+      playlistInfo.textContent = tracks.length + ' titres';
+      shuffleOrder = buildShuffleOrder();
+      renderPlaylist();
+    })
     .catch(function(e) {
-      playlistBody.innerHTML = '<div class="state-msg">❌ Erreur : ' + e.message + '</div>';
+      playlistBody.innerHTML = '<div class="state-msg">❌ playlist.json introuvable</div>';
+      trackCount.textContent = 'erreur';
     });
 
-  function onTracksLoaded(data) {
-    tracks = data;
-    trackCount.textContent = tracks.length + ' piste' + (tracks.length > 1 ? 's' : '');
-    playlistInfo.textContent = tracks.length + ' titres';
-
-    if (tracks.length === 0) {
-      playlistBody.innerHTML = '<div class="state-msg">Aucun fichier audio trouvé dans le dossier.</div>';
-      return;
-    }
-
-    shuffleOrder = buildShuffleOrder();
+  function loadTrack(idx) {
+    if (idx < 0 || idx >= tracks.length) return;
+    currentIdx = idx;
+    var t = tracks[idx];
+    audio.src = MUSIC_FOLDER + '/' + encodeURIComponent(t.file);
+    audio.volume = parseFloat(volumeSlider.value);
+    audio.play();
+    setPlayingUI(true);
+    trackTitle.textContent = t.name;
+    trackIndex.textContent = (idx + 1) + ' / ' + tracks.length;
     renderPlaylist();
+    scrollToActive();
   }
 
-  function buildShuffleOrder() {
-    var arr = tracks.map(function(_, i) { return i; });
-    for (var i = arr.length - 1; i > 0; i--) {
-      var j = Math.floor(Math.random() * (i + 1));
-      var tmp = arr[i]; arr[i] = arr[j]; arr[j] = tmp;
-    }
-    return arr;
+  function setPlayingUI(playing) {
+    iconPlay.style.display  = playing ? 'none'  : 'block';
+    iconPause.style.display = playing ? 'block' : 'none';
+    vinyl.classList.toggle('spinning', playing);
+    nowPlaying.classList.toggle('playing', playing);
   }
 
-  // ── Playlist render ────────────────────────────────────
   function renderPlaylist() {
     playlistBody.innerHTML = '';
     tracks.forEach(function(t, i) {
@@ -456,35 +324,29 @@
     });
   }
 
-  // ── Load & play ────────────────────────────────────────
-  function loadTrack(idx) {
-    if (idx < 0 || idx >= tracks.length) return;
-    currentIdx = idx;
-    var t = tracks[idx];
-    var url = "https://drive.google.com/uc?export=download&id=" + t.id + "&confirm=t";
-    audio.src = url;
-    audio.volume = parseFloat(volumeSlider.value);
-    audio.play();
-    setPlayingUI(true);
-    trackTitle.textContent = t.name;
-    trackIndex.textContent = (idx + 1) + ' / ' + tracks.length;
-    renderPlaylist();
-    scrollToActive();
-  }
-
-  function setPlayingUI(playing) {
-    iconPlay.style.display  = playing ? 'none'  : 'block';
-    iconPause.style.display = playing ? 'block' : 'none';
-    vinyl.classList.toggle('spinning', playing);
-    nowPlaying.classList.toggle('playing', playing);
-  }
-
   function scrollToActive() {
     var active = playlistBody.querySelector('.playlist-item.active');
     if (active) active.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
   }
 
-  // ── Controls ───────────────────────────────────────────
+  function buildShuffleOrder() {
+    var arr = tracks.map(function(_, i) { return i; });
+    for (var i = arr.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var tmp = arr[i]; arr[i] = arr[j]; arr[j] = tmp;
+    }
+    return arr;
+  }
+
+  function nextShuffleIdx() {
+    var pos = shuffleOrder.indexOf(currentIdx);
+    return shuffleOrder[(pos + 1) % shuffleOrder.length];
+  }
+  function prevShuffleIdx() {
+    var pos = shuffleOrder.indexOf(currentIdx);
+    return shuffleOrder[(pos - 1 + shuffleOrder.length) % shuffleOrder.length];
+  }
+
   btnPlay.addEventListener('click', function() {
     if (tracks.length === 0) return;
     if (currentIdx === -1) { loadTrack(0); return; }
@@ -494,13 +356,11 @@
 
   btnPrev.addEventListener('click', function() {
     if (audio.currentTime > 3) { audio.currentTime = 0; return; }
-    var idx = shuffle ? prevShuffleIdx() : (currentIdx - 1 + tracks.length) % tracks.length;
-    loadTrack(idx);
+    loadTrack(shuffle ? prevShuffleIdx() : (currentIdx - 1 + tracks.length) % tracks.length);
   });
 
   btnNext.addEventListener('click', function() {
-    var idx = shuffle ? nextShuffleIdx() : (currentIdx + 1) % tracks.length;
-    loadTrack(idx);
+    loadTrack(shuffle ? nextShuffleIdx() : (currentIdx + 1) % tracks.length);
   });
 
   btnShuffle.addEventListener('click', function() {
@@ -514,21 +374,8 @@
     btnRepeat.classList.toggle('active', repeat);
   });
 
-  volumeSlider.addEventListener('input', function() {
-    audio.volume = parseFloat(this.value);
-  });
+  volumeSlider.addEventListener('input', function() { audio.volume = parseFloat(this.value); });
 
-  // ── Shuffle helpers ────────────────────────────────────
-  function nextShuffleIdx() {
-    var pos = shuffleOrder.indexOf(currentIdx);
-    return shuffleOrder[(pos + 1) % shuffleOrder.length];
-  }
-  function prevShuffleIdx() {
-    var pos = shuffleOrder.indexOf(currentIdx);
-    return shuffleOrder[(pos - 1 + shuffleOrder.length) % shuffleOrder.length];
-  }
-
-  // ── Audio events ───────────────────────────────────────
   audio.addEventListener('ended', function() {
     if (repeat) { audio.currentTime = 0; audio.play(); return; }
     var next = shuffle ? nextShuffleIdx() : currentIdx + 1;
@@ -538,8 +385,7 @@
 
   audio.addEventListener('timeupdate', function() {
     if (!audio.duration) return;
-    var pct = (audio.currentTime / audio.duration) * 100;
-    progressFill.style.width = pct + '%';
+    progressFill.style.width = (audio.currentTime / audio.duration * 100) + '%';
     timeElapsed.textContent  = fmt(audio.currentTime);
     timeDuration.textContent = fmt(audio.duration);
   });
@@ -550,10 +396,8 @@
     audio.currentTime = ((e.clientX - rect.left) / rect.width) * audio.duration;
   });
 
-  // ── Utils ──────────────────────────────────────────────
   function fmt(s) {
-    var m = Math.floor(s / 60);
-    var sec = Math.floor(s % 60);
+    var m = Math.floor(s / 60), sec = Math.floor(s % 60);
     return m + ':' + (sec < 10 ? '0' : '') + sec;
   }
   function escHtml(s) {
