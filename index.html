@@ -214,7 +214,12 @@
 
 <script>
   var MUSIC_FOLDER = "music";
-  var COVER_IMAGE  = "cover.png"; // image à la racine du repo
+  var COVER_IMAGE  = "cover.jpg";
+
+  var GH_USER  = "Nongor13";
+  var GH_REPO  = "drive-player";
+  var GH_TOKEN = "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";
+  var GH_API   = "https://api.github.com/repos/" + GH_USER + "/" + GH_REPO + "/contents/playlist.json";
 
   var tracks       = [];
   var currentIdx   = -1;
@@ -222,22 +227,27 @@
   var repeat       = false;
   var shuffleOrder = [];
   var lyricsOpen   = false;
+  var playlistSha  = null;
 
-  // ── Compteur d'écoutes (localStorage) ─────────────────────
-  var PLAYS_KEY = 'ceremixtape_plays';
-  function loadPlays() {
-    try { return JSON.parse(localStorage.getItem(PLAYS_KEY)) || {}; } catch(e) { return {}; }
+  // ── Compteur d'écoutes (GitHub API) ──────────────────────
+  function getPlays(file) {
+    var t = tracks.find(function(x) { return x.file === file; });
+    return t ? (t.plays || 0) : 0;
   }
-  function savePlays(plays) {
-    try { localStorage.setItem(PLAYS_KEY, JSON.stringify(plays)); } catch(e) {}
+
+  function pushPlays() {
+    if (!playlistSha) return;
+    var payload = tracks.map(function(t) { return { file: t.file, plays: t.plays || 0 }; });
+    var encoded = btoa(unescape(encodeURIComponent(JSON.stringify(payload, null, 2) + '\n')));
+    fetch(GH_API, {
+      method: 'PUT',
+      headers: { 'Authorization': 'token ' + GH_TOKEN, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message: 'update play counts', content: encoded, sha: playlistSha })
+    })
+    .then(function(r) { return r.json(); })
+    .then(function(data) { if (data.content) playlistSha = data.content.sha; })
+    .catch(function(e) { console.warn('Erreur push compteurs :', e); });
   }
-  function incrementPlay(file) {
-    var plays = loadPlays();
-    plays[file] = (plays[file] || 0) + 1;
-    savePlays(plays);
-    return plays[file];
-  }
-  function getPlays(file) { return loadPlays()[file] || 0; }
 
   var audio         = document.getElementById('audio');
   var btnPlay       = document.getElementById('btnPlay');
@@ -273,12 +283,15 @@
   };
   coverImg.src = COVER_IMAGE;
 
-  // ── Playlist ─────────────────────────────────────────────
-  fetch('playlist.json')
+  // ── Playlist (via GitHub API pour récupérer SHA + compteurs) ──
+  fetch(GH_API, { headers: { 'Authorization': 'token ' + GH_TOKEN } })
     .then(function(r) { return r.json(); })
-    .then(function(files) {
-      tracks = files.map(function(f) {
-        return { file: f, name: f.replace(/\.[^/.]+$/, '').replace(/_/g, ' ') };
+    .then(function(ghFile) {
+      playlistSha = ghFile.sha;
+      var decoded = JSON.parse(decodeURIComponent(escape(atob(ghFile.content.replace(/\n/g, '')))));
+      tracks = decoded.map(function(entry) {
+        var f = typeof entry === 'string' ? entry : entry.file;
+        return { file: f, name: f.replace(/\.[^/.]+$/, '').replace(/_/g, ' '), plays: entry.plays || 0 };
       });
       trackCount.textContent = tracks.length + ' piste' + (tracks.length > 1 ? 's' : '');
       playlistInfo.textContent = tracks.length + ' titres';
@@ -317,7 +330,8 @@
     setPlayingUI(true);
     trackTitle.textContent = t.name;
     trackIndex.textContent = (idx + 1) + ' / ' + tracks.length;
-    incrementPlay(t.file);
+    t.plays = (t.plays || 0) + 1;
+    pushPlays();
     loadLyrics(t.file);
     renderPlaylist();
     scrollToActive();
