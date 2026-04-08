@@ -214,12 +214,7 @@
 
 <script>
   var MUSIC_FOLDER = "music";
-  var COVER_IMAGE  = "cover.png";
-
-  var GH_USER  = "Nongor13";
-  var GH_REPO  = "drive-player";
-  var GH_TOKEN = "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";
-  var GH_API   = "https://api.github.com/repos/" + GH_USER + "/" + GH_REPO + "/contents/playlist.json";
+  var COVER_IMAGE  = "cover.jpg"; // image à la racine du repo
 
   var tracks       = [];
   var currentIdx   = -1;
@@ -227,27 +222,22 @@
   var repeat       = false;
   var shuffleOrder = [];
   var lyricsOpen   = false;
-  var playlistSha  = null;
 
-  // ── Compteur d'écoutes (GitHub API) ──────────────────────
-  function getPlays(file) {
-    var t = tracks.find(function(x) { return x.file === file; });
-    return t ? (t.plays || 0) : 0;
+  // ── Compteur d'écoutes (localStorage) ─────────────────────
+  var PLAYS_KEY = 'ceremixtape_plays';
+  function loadPlays() {
+    try { return JSON.parse(localStorage.getItem(PLAYS_KEY)) || {}; } catch(e) { return {}; }
   }
-
-  function pushPlays() {
-    if (!playlistSha) return;
-    var payload = tracks.map(function(t) { return { file: t.file, plays: t.plays || 0 }; });
-    var encoded = btoa(unescape(encodeURIComponent(JSON.stringify(payload, null, 2) + '\n')));
-    fetch(GH_API, {
-      method: 'PUT',
-      headers: { 'Authorization': 'token ' + GH_TOKEN, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ message: 'update play counts', content: encoded, sha: playlistSha })
-    })
-    .then(function(r) { return r.json(); })
-    .then(function(data) { if (data.content) playlistSha = data.content.sha; })
-    .catch(function(e) { console.warn('Erreur push compteurs :', e); });
+  function savePlays(plays) {
+    try { localStorage.setItem(PLAYS_KEY, JSON.stringify(plays)); } catch(e) {}
   }
+  function incrementPlay(file) {
+    var plays = loadPlays();
+    plays[file] = (plays[file] || 0) + 1;
+    savePlays(plays);
+    return plays[file];
+  }
+  function getPlays(file) { return loadPlays()[file] || 0; }
 
   var audio         = document.getElementById('audio');
   var btnPlay       = document.getElementById('btnPlay');
@@ -284,24 +274,16 @@
   coverImg.src = COVER_IMAGE;
 
   // ── Playlist ─────────────────────────────────────────────
-  // On charge playlist.json normalement (pas de CORS), puis on récupère
-  // le SHA via l'API GitHub (nécessaire pour pouvoir écrire ensuite).
-  fetch('playlist.json?nocache=' + Date.now())
+  fetch('playlist.json')
     .then(function(r) { return r.json(); })
-    .then(function(data) {
-      tracks = data.map(function(entry) {
-        var f = typeof entry === 'string' ? entry : entry.file;
-        return { file: f, name: f.replace(/\.[^/.]+$/, '').replace(/_/g, ' '), plays: entry.plays || 0 };
+    .then(function(files) {
+      tracks = files.map(function(f) {
+        return { file: f, name: f.replace(/\.[^/.]+$/, '').replace(/_/g, ' ') };
       });
       trackCount.textContent = tracks.length + ' piste' + (tracks.length > 1 ? 's' : '');
       playlistInfo.textContent = tracks.length + ' titres';
       shuffleOrder = buildShuffleOrder();
       renderPlaylist();
-      // Récupération du SHA en arrière-plan
-      fetch(GH_API, { headers: { 'Authorization': 'token ' + GH_TOKEN } })
-        .then(function(r) { return r.json(); })
-        .then(function(ghFile) { playlistSha = ghFile.sha; })
-        .catch(function(e) { console.warn('SHA non récupéré :', e); });
     })
     .catch(function() {
       playlistBody.innerHTML = '<div class="state-msg">❌ playlist.json introuvable</div>';
@@ -335,8 +317,7 @@
     setPlayingUI(true);
     trackTitle.textContent = t.name;
     trackIndex.textContent = (idx + 1) + ' / ' + tracks.length;
-    t.plays = (t.plays || 0) + 1;
-    pushPlays();
+    incrementPlay(t.file);
     loadLyrics(t.file);
     renderPlaylist();
     scrollToActive();
@@ -351,7 +332,7 @@
   function renderPlaylist() {
     playlistBody.innerHTML = '';
     tracks.forEach(function(t, i) {
-      var plays = t.plays || 0;
+      var plays = getPlays(t.file);
       var playsHtml = plays > 0
         ? '<span class="item-plays has-plays">' + plays + ' écoute' + (plays > 1 ? 's' : '') + '</span>'
         : '<span class="item-plays">—</span>';
