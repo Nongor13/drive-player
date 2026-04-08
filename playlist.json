@@ -1,14 +1,14 @@
 [
-  { "file": "Intro.mp3", "plays": 0 },
-  { "file": "Ceremavie.mp3", "plays": 0 },
-  { "file": "DaviDance.mp3", "plays": 0 },
-  { "file": "MaPT.mp3", "plays": 0 },
-  { "file": "Nova.mp3", "plays": 0 },
-  { "file": "GillesBoy.mp3", "plays": 0 },
-  { "file": "Belote et Rebelote.mp3", "plays": 0 },
-  { "file": "On se rappelle.mp3", "plays": 0 },
-  { "file": "Liberté.mp3", "plays": 0 },
-  { "file": "Génération décarbonée.mp3", "plays": 0 },
-  { "file": "Numéro 1.mp3", "plays": 0 },
-  { "file": "Tachi-Tachi.mp3", "plays": 0 }
+  "Intro.mp3",
+  "Ceremavie.mp3",
+  "DaviDance.mp3",
+  "MaPT.mp3",
+  "Nova.mp3",
+  "GillesBoy.mp3",
+  "Belote et Rebelote.mp3",
+  "On se rappelle.mp3",
+  "Liberté.mp3",
+  "Génération décarbonée.mp3",
+  "Numéro 1.mp3",
+  "Tachi-Tachi.mp3"
 ]
